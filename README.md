@@ -1,5 +1,5 @@
 ### This is a simple quiz app built by Vue.js
-
+![VueQuiz](Quiz.png)
 ***
 ##### The official description is as follows.
 # Vue 3 + Vite
