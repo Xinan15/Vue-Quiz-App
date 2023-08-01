@@ -65,9 +65,11 @@ const getCurrentQuestion = computed(() => {
 
 // evt denotes the event object
 // Here, you are defining computed properties for the component. 
-// These properties will automatically update whenever any of the reactive data they depend on changes.
+
 const SetAnswer = evt => {
-  questions.value[currentQuestion.value].selected = parseInt(evt.target.value);
+  if (questions.value[currentQuestion.value].selected === null) {
+    questions.value[currentQuestion.value].selected = parseInt(evt.target.value);
+  }
 };
 
 
@@ -138,14 +140,13 @@ The @click and @input are event listeners. They call a method when an event occu
  -->
 <style scoped>
 * {
-  margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
 
 body {
-  background-color: #2d213f;
+  background-color: #D7BBF5;
   color: #FFF;
 }
 
@@ -155,6 +156,7 @@ body {
   align-items: center;
   padding: 2rem;
   height: 100vh;
+  margin-top:2rem;
 }
 
 h1 {
@@ -163,22 +165,25 @@ h1 {
 }
 
 .quiz {
-  background-color: #382a4b;
-  padding: 5rem;
+  background-color: #A076F9;
+  padding: 4rem;
   width: 100%;
-  max-width: 640px;
-
+  max-width: auto;
+  border-radius: 1rem;  
 }
 
 .quiz-info {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+  align-items: center;
 }
 
 .quiz-info .question {
   color: #FFF;
   font-size: 1.25rem;
+  font-weight: bold;
+  padding:10px;
 }
 
 .quiz-info.score {
@@ -187,14 +192,14 @@ h1 {
 }
 
 .options {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .option {
   padding: 1rem;
+  margin: 1rem;
   display: block;
-  background-color: #271c36;
-  margin-bottom: 0.5rem;
+  background-color: #6528F7;
   border-radius: 0.5rem;
   cursor: pointer;
 }
@@ -248,8 +253,9 @@ h2 {
 }
 
 p {
-  color: #8F8F8F;
+  color: #A076F9;
   font-size: 1.5rem;
   text-align: center;
+  font-weight: bold;
 }
 </style>
