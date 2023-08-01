@@ -1,22 +1,26 @@
 <script setup>
-// <script setup> is to create a component without the need to export it.
-// ref is used to create reactive data, and computed is used to create computed properties.
+// in <script setup>, you should write your component's logic.
+// Such as reactive state, computed properties, and methods.
+// Vue's Composition API
 
 import { ref, computed } from 'vue'
 
-// Here we create a reactive variable called questions
 // ref denotes reference
+// ref() is a function in Vue.js that creates a reactive reference. 
+// a reactive reference in Vue is just the same as a state variable in React.
+
 const questions = ref([
   {
     question: 'What is Vue.js?',
     answer: 2,
-    // O here is the index of the correct answer
+    // 2 here is the index of the correct answer
     options: [
       'A back-end server framework.',
       'A database management system.',
       'A JavaScript framework for building user interfaces.'
     ],
     selected: null
+    // Here means initially no option is selected
   },
   {
     question: 'Is Vue.js a front-end or back-end framework?',
@@ -40,13 +44,15 @@ const questions = ref([
   }
 ]);
 
+// here means initially quiz is not completed
 const quizCompleted = ref(false);
 
+// here means initially the index of the current question is 0
 const currentQuestion = ref(0);
 
-// These lines are declaring the reactive data for your component.
-// Any changes to these variables will cause the component to re-render.
-
+// The computed() function in Vue.js is used to create a computed property. 
+// A computed property is a property whose value depends on one or more other properties, called dependencies.
+// Whenever a dependency changes, the computed property will be re-evaluated.
 const score = computed(() => {
   let score = 0;
   questions.value.forEach(question => {
@@ -56,6 +62,12 @@ const score = computed(() => {
   });
   return score;
 });
+
+// The forEach() method in JavaScript executes a provided function once for each array element in an array.
+// question => arrow function: the function takes 'question' as a parameter.
+// The function body comes after the =>, in the curly braces.
+// questions is a ref() defined above, which is an array of objects.
+// so, questions.value, is accessing the current value of the questions reactive reference.
 
 const getCurrentQuestion = computed(() => {
   let question = questions.value[currentQuestion.value];
@@ -71,7 +83,8 @@ const SetAnswer = evt => {
     questions.value[currentQuestion.value].selected = parseInt(evt.target.value);
   }
 };
-
+// [currentQuestion.value] is the index of the current question
+// questions.value[currentQuestion.value]: is accessing the specific question object
 
 const NextQuestion = () => {
   if (currentQuestion.value < questions.value.length - 1) {
@@ -86,6 +99,8 @@ const NextQuestion = () => {
   <!-- <template> contains the HTML that will be rendered for the component. -->
   <main class="app">
     <h1>The Quiz</h1>
+    <!-- The v-if directive is used in Vue.js to conditionally render an element only if the directive's expression returns a truthy value. -->
+    <!-- <section class="quiz" v-if="!quizCompleted"> will render the section element with the class quiz only if quizCompleted is false -->
 
     <section class="quiz" v-if="!quizCompleted">
       <div class="quiz-info">
@@ -93,6 +108,7 @@ const NextQuestion = () => {
         <span class="score">Score {{ score }}/{{ questions.length }}</span>
       </div>
 
+      <!-- The v-for directive renders a list of items based on an array.  -->
       <div class="options">
         <label v-for="(option, index) in getCurrentQuestion.options" :for="'option' + index" :class="`option ${getCurrentQuestion.selected == index
           ? index == getCurrentQuestion.answer
@@ -111,7 +127,7 @@ const NextQuestion = () => {
           <span>{{ option }}</span>
         </label>
       </div>
-
+<!-- The @click and @input are event listeners. They call a method when an event occurs. -->
       <button @click="NextQuestion" :disabled="getCurrentQuestion.selected === null">
         {{
           getCurrentQuestion.index == questions.length - 1
@@ -130,15 +146,9 @@ const NextQuestion = () => {
   </main>
 </template>
 
-<!-- 
-  <template> contains the HTML that will be rendered for the component.
-
-The v-if directive is used to conditionally render elements based on the value of quizCompleted. If the quiz is not completed, it shows the quiz; otherwise, it shows the result.
-The v-for directive is used to render a list of elements based on an array.
-The :for, :class, :id, :name, :value, :checked, and :disabled are all examples of bindings. They dynamically bind DOM attributes to data.
-The @click and @input are event listeners. They call a method when an event occurs.
- -->
 <style scoped>
+/* 'scoped' attribute here limits the CSS within that tag to the current component only.
+This means the styles defined here will not leak out to child or parent components. */
 * {
   padding: 0;
   box-sizing: border-box;
